@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}U-market{% endblock %}</title>
+    {% load static %}
+    <!-- Bootstrap CSS (can replace with your preferred CSS framework) -->
+    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
+
+    <!-- Custom CSS (optional) -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    {% block head_extra %}{% endblock %}
+
+</head>
+
+<body id="body">
+    <!-- Header Section -->
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light" id="header">
+            <div class="container d-flex justify-content-between">
+                <!-- Move the toggler button before the logo -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                
+               
+                
+                <!-- Navbar links -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link " href="{% url 'home' %}">Home <span class="i">| </span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'about' %}">About  <span class="i">|</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'contact' %}">Contact <span class="i"> |</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'services' %}">Services <span class="i"> |</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'admin:index' %}">Admin</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Sell Button, aligned to the right -->
+                <a href="{% url 'add_product' %}" class="btnn">+Sell</a>
+            </div>
+        </nav>
+       
+
+          
+       
+        
+    </header>
+
+    <!-- Main Content Area -->
+    <main>
+        <div class="container">
+            {% block content %}
+            <!-- Content will be inserted here from child templates -->
+            {% endblock %}
+        </div>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="bg-light py-4" id="foot">
+        <div class="container text-center">
+            <p id="copy">&copy; 2024 Umarket. All rights reserved.</p>
+            <div class="social-links">
+                <a href="#" class="mx-2">Facebook</a>
+                <a href="#" class="mx-2">Twitter</a>
+                <a href="#" class="mx-2">Instagram</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
+
+    <script src="{% static 'js/bootstrap.js' %}"></script>
+
+    {% block scripts %}{% endblock %}
+</body>
+
+</html>

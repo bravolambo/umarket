@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ product.name }} - Umarket{% endblock %}
+
+{% block content %}
+<div class="product-details">
+    <table class="product-table">
+        <tr>
+            <td>
+                <h1 class="detail" id="detail">{{ product.name }}</h1>
+                <div class="detail">
+                    <p><strong>Price:</strong><br> <span class="font"> {{ product.price }} Tsh</span></p>
+                    <hr style="color: white;">
+                    <p><strong>Description:</strong><br><span class="font"> {{ product.description }}</span></p>
+                    <hr style="color: white;">
+                    <p><strong>College:</strong><br><span class="font"> {{ product.college }}</span></p>
+                    <hr style="color: white;">
+                    <p><strong>Block:</strong><br><span class="font"> {{ product.block }}</span></p>
+                    <hr style="color: white;">
+                    <p><strong>Contact:</strong><br><span class="font"> {{ product.contact }}</span></p>
+                    
+                </div>
+
+                <a href="{% url 'home' %}" class="btn btn-secondary">Back to Home</a>
+            </td>
+            <td>
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid product-image">
+            </td>
+        </tr>
+    </table>
+</div>
+
+{% endblock %}

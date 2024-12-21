@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}About - Umarket{% endblock %}
+
+{% block content %}
+{% load static %}
+<div class="about-page mt-5">
+    <div class="text-center mb-5">
+        <h1>About Umarket</h1>
+        <p class="lead">Connecting Students at the University of Dodoma through a Seamless Online Marketplace.</p>
+    </div>
+
+    <!-- Mission Section -->
+    <div class="row mb-5">
+        <div class="col-md-6">
+            <h2>Our Mission</h2>
+            <p>
+                At Umarket, we aim to empower the students of the University of Dodoma with a convenient platform for buying and 
+                selling goods and services within their community. Our mission is to foster entrepreneurship, promote accessibility, and 
+                ensure a safe and reliable marketplace experience.
+            </p>
+        </div>
+       
+    </div>
+
+    <!-- Values Section -->
+    <div class="row mb-5">
+        <div class="col-md-6 order-md-2">
+            <h2>Our Values</h2>
+            <ul id="ourvalue">
+                <li>Integrity: Building trust within the UDOM community.</li>
+                <li>Innovation: Leveraging technology to simplify transactions.</li>
+                <li>Community: Strengthening student connections and collaborations.</li>
+                <li>Reliability: Ensuring safe and secure transactions.</li>
+            </ul>
+        </div>
+      
+    </div>
+
+    <!-- Team Section -->
+    <div class="team-section">
+        <h2 class="text-center mb-4">Meet the Team</h2>
+        <div class="row">
+            <!-- Developer Profile -->
+            <div class="col-md-6 mb-4">
+                <div class="card h-100 shadow">
+                    <img src="{% static 'images/developer.jpg' %}" class="card-img-top" alt="Developer">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">John Doe</h5>
+                        <p class="card-text">Lead Developer</p>
+                        <p>John is a passionate software engineer with expertise in building scalable web applications. He is the technical backbone of Umarket.</p>
+                        <div class="social-links">
+                            <a href="#" class="mx-2">LinkedIn</a>
+                            <a href="#" class="mx-2">GitHub</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Marketing Director Profile -->
+            <div class="col-md-6 mb-4">
+                <div class="card h-100 shadow">
+                    <img src="{% static 'images/marketing_director.jpg' %}" class="card-img-top" alt="Marketing Director">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Jane Smith</h5>
+                        <p class="card-text">Marketing Director</p>
+                        <p>Jane specializes in digital marketing strategies and community outreach. She ensures Umarket reaches and resonates with its audience.</p>
+                        <div class="social-links">
+                            <a href="#" class="mx-2">LinkedIn</a>
+                            <a href="#" class="mx-2">Twitter</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Call-to-Action -->
+    <div class="text-center mt-5">
+        <h3>Join Our Growing Community!</h3>
+        <p>Explore Umarket and experience the convenience of an online marketplace built for students, by students.</p>
+        <a href="#" class="btn btn-primary">Get Started</a>
+    </div>
+</div>
+{% endblock %}
