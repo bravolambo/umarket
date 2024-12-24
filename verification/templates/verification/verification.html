@@ -7,7 +7,7 @@
     <h1 class="text-center">UDOM Verification</h1>
     <hr>
 
-    <form method="POST" class="form">
+    <form method="POST" class="form" enctype="multipart/form-data">
         {% csrf_token %}
 
         <!-- Registration Number Input -->
@@ -16,75 +16,67 @@
             <input type="text" id="registration_number" name="registration_number" class="form-control" placeholder="Enter your UDOM Registration Number" required>
         </div>
 
-        <!-- Hidden Input for Scanned Data -->
-        <input type="hidden" id="scanned_data" name="scanned_data" />
-
-        <!-- ID Card Scanner -->
+        <!-- Front of ID Upload -->
         <div class="mb-3">
-            <label for="scanner" class="form-label">Scan Your ID Card</label>
-            <div id="scanner" class="border rounded" style="width: 100%; height: 300px; background: #000;"></div>
-            <small class="text-muted">Ensure your ID card is clearly visible in the scanner frame.</small>
+            <label for="id_front" class="form-label">Upload Front of ID</label>
+            <input type="file" id="id_front" name="id_front" class="form-control" accept="image/*" required>
+        </div>
+
+        <!-- Back of ID Upload -->
+        <div class="mb-3">
+            <label for="id_back" class="form-label">Upload Back of ID</label>
+            <input type="file" id="id_back" name="id_back" class="form-control" accept="image/*" required>
+        </div>
+
+        <!-- Real-time Picture Capture -->
+        <div class="mb-3">
+            <label for="camera" class="form-label">Capture Real-Time Picture</label>
+            <div class="border rounded" style="width: 100%; height: 300px; background: #000;">
+                <video id="camera" autoplay playsinline class="w-100 h-100"></video>
+            </div>
+            <button type="button" class="btn btn-secondary mt-2" id="capture">Capture Photo</button>
+            <canvas id="photoCanvas" class="d-none"></canvas>
+            <input type="hidden" id="real_time_photo" name="real_time_photo">
+            <small class="text-muted">Ensure your face is clearly visible in the camera frame.</small>
         </div>
 
         <!-- Submit Button -->
         <div class="mb-3">
-            <button type="submit" class="btn btn-primary w-100">Submit</button>
+            <button type="submit" class="btn btn-primary w-100">Verify</button>
         </div>
     </form>
 </div>
 
 <script>
-    // Initialize QuaggaJS for scanning
+    // Real-time photo capture logic
     document.addEventListener("DOMContentLoaded", function () {
-        Quagga.init(
-            {
-                inputStream: {
-                    name: "Live",
-                    type: "LiveStream",
-                    target: document.querySelector("#scanner"), // Scanner div
-                    constraints: {
-                        facingMode: "environment", // Use rear camera on mobile devices
-                    },
-                    willReadFrequently: true,
-                },
-                decoder: {
-                    readers: [
-    "code_128_reader", 
-    "ean_reader", 
-    "upc_reader", 
-    "code_39_reader"
-],
+        const video = document.getElementById("camera");
+        const canvas = document.getElementById("photoCanvas");
+        const captureButton = document.getElementById("capture");
+        const photoInput = document.getElementById("real_time_photo");
 
-                },
-            },
-            function (err) {
-                if (err) {
-                    console.error("Error initializing Quagga:", err);
-                    return;
-                }
-                console.log("Quagga initialized successfully.");
-                Quagga.start();
-            }
-        );
+        // Access the user's webcam
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then((stream) => {
+                video.srcObject = stream;
+            })
+            .catch((err) => {
+                console.error("Error accessing webcam:", err);
+                alert("Unable to access the camera. Please check your device settings.");
+            });
 
-        // On detection, populate the registration number and hidden scanned data field
-        Quagga.onDetected(function (data) {
-            // Log the entire data object and scanned code for debugging
-            console.log("Scanned Data Object:", data);
-            console.log("Scanned Barcode Format:", data.codeResult.format);
-            console.log("Scanned Code:", data.codeResult.code);
+        // Capture photo when button is clicked
+        captureButton.addEventListener("click", function () {
+            const context = canvas.getContext("2d");
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-            // Populate the registration number field
-            document.getElementById("registration_number").value = data.codeResult.code;
+            // Convert the captured image to a base64 string
+            const photoData = canvas.toDataURL("image/png");
+            photoInput.value = photoData;
 
-            // Populate the scanned_data hidden field
-            document.getElementById("scanned_data").value = data.codeResult.code;
-
-            // Show an alert with the scanned code
-            alert("ID Scanned Successfully: " + data.codeResult.code);
-
-            // Stop scanning after detection
-            Quagga.stop();
+            alert("Photo captured successfully!");
         });
     });
 </script>

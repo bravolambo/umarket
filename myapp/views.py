@@ -13,7 +13,7 @@ def add_product(request):
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect('home')  # Redirect to home page after saving
+            return redirect('verification')  # Redirect to home page after saving
     else:
         form = ProductForm()
     return render(request, 'add_product.html', {'form': form})
@@ -22,9 +22,9 @@ def product_detail(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     return render(request, 'product_detail.html', {'product': product})
 def index(request):
-    # Fetching products from the database
     products = Product.objects.all()
-    return render(request, 'index.html', {'products': products})
+    total_products = products.count()  # Count the total products
+    return render(request, 'index.html', {'products': products, 'total_products': total_products})
 
 # View for the about page (if needed)
 def about(request):

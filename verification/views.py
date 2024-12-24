@@ -1,31 +1,51 @@
 from django.shortcuts import render, redirect
-from django.contrib import messages
+from django.http import HttpResponse
 from .models import Verification
-
-def verification_success(request):
-    """Renders the success page after a successful verification."""
-    return render(request, 'verification/success.html', {})
+from django.core.files.base import ContentFile
+import base64
 
 def verification_view(request):
-    """Handles the verification process."""
-    if request.method == "POST":
-        registration_number = request.POST.get('registration_number', '').strip()
-        scanned_data = request.POST.get('scanned_data', '').strip()
-        print(request.POST)
-        # Validate the input manually
-        if not registration_number:
-            messages.error(request, "Registration number is required.")
-        else:
-            # Save the data to the model
-            verification = Verification(
-                registration_number=registration_number,
-                scanned_data=scanned_data,
-            )
-            try:
-                verification.save()
-                messages.success(request, "Verification successful!")
-                return redirect('verification-success')  # Redirect to a success page
-            except Exception as e:
-                messages.error(request, f"Error saving data: {e}")
+    """
+    Handle the verification form submission and render the verification page.
+    """
+    if request.method == 'POST':
+        # Retrieve form data directly from POST and FILES
+        registration_number = request.POST.get('registration_number')
+        id_front = request.FILES.get('id_front')
+        id_back = request.FILES.get('id_back')
+        real_time_photo_data = request.POST.get('real_time_photo')  # Base64 encoded photo
 
-    return render(request, 'verification/verification.html')
+        if registration_number and id_front and id_back:
+            # Save data to the Verification model
+            verification = Verification.objects.create(
+                registration_number=registration_number,
+                id_front=id_front,
+                id_back=id_back,
+            )
+
+            # Handle real-time photo if provided
+            if real_time_photo_data:
+                try:
+                    # Decode the base64 string and save as an image file
+                    format, imgstr = real_time_photo_data.split(';base64,')
+                    ext = format.split('/')[-1]  # Extract image extension (e.g., png)
+                    photo_data = ContentFile(base64.b64decode(imgstr), name=f'real_time_photo.{ext}')
+
+                    # Save the decoded image to the model's field
+                    verification.real_time_photo.save(f'real_time_photo.{ext}', photo_data)
+                except Exception as e:
+                    return HttpResponse(f"Error processing real-time photo: {str(e)}")
+
+            return redirect('home')
+        else:
+            return HttpResponse("All fields are required. Please check the form.")
+    else:
+        # Render the verification form template
+        return render(request, 'verification/verification.html')
+
+
+def index(request):
+    """
+    Render the success page after successful form submission.
+    """
+    return render(request, 'umarket/index.html')

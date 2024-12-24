@@ -4,17 +4,27 @@
 
 {% block content %}
 {% load static %}
-<!-- Background Section -->
-<div id="cover-picture" class="cover-container">
 
+<!-- Alert Message for Better Experience -->
+<div class="alert alert-info alert-dismissible fade show text-center" role="alert" id="blue">
+    <strong>Tip:</strong> For a better experience, we recommend using a laptop for now.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="white"></button>
 </div>
-    <!-- Text and Button Overlay -->
-    <div class="text-overlay">
-        <h2>Explore Our Amazing Products</h2>
-        <p id="p">Find the best deals on your favorite items.</p>
-        <a href="#row" class="btn">Shop Now</a>
-    </div>
+
+<!-- Background Section -->
+<div id="cover-picture" class="cover-container"></div>
+<!-- Text and Button Overlay -->
+<div class="text-overlay">
+    <h2>Explore Our Amazing Products</h2>
+    <p id="p">Find the best deals on your favorite items.</p>
+    <a href="#row" class="btn">Shop Now</a>
+</div>
+
+<!-- Subtitle and Product Count -->
 <p class="subtitle" id="row">Browse our products:</p>
+<div class="text-center mb-4">
+    <h4>We currently have <strong>{{ total_products }}</strong> products listed by our sellers!<br>Everyone is selling, you don't . . .</h4>
+</div>
 
 <!-- Product Grid -->
 <div class="row">
@@ -26,7 +36,6 @@
                 <div class="card-body">
                     <p class="card-text">{{ product.price }} Tsh</p>
                     <h5 class="card-title">{{ product.name }}</h5>
-                    
                     <a href="{% url 'product_detail' product.id %}" class="btn btn-primary">View Details</a>
                 </div>
             </div>
